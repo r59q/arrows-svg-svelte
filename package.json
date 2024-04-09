@@ -19,7 +19,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "tailwind": "tailwindcss -i ./src/app.css -o ./src/output.css --watch",
+    "tailwind": "tailwindcss -i ./src/styles.css -o ./src/app.css --watch",
     "build": "vite build --watch",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
