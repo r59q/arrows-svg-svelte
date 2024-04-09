@@ -7,26 +7,41 @@
       drawArrows();
     }, 200);
   });
+
+  const iterated = (arr: number[]) => {
+    return arr.map((val) => val + 1).map((val) => val % ids.length);
+  };
+
+  const ids = [0, 1, 2, 3, 4, 5];
+  let targetIds = iterated(ids);
+
+  const iterate = () => {
+    targetIds = iterated([...targetIds]);
+  };
+
+  const reduce = () => {};
 </script>
 
 <main class="w-screen h-screen">
   <div class="flex flex-col justify-center h-full">
     <div class="flex flex-row justify-evenly">
       <div class="flex flex-col">
-        <p use:arrowSrc={1}>1</p>
-        <p use:arrowSrc={2}>2</p>
-        <p use:arrowSrc={3}>3</p>
-        <p use:arrowSrc={4}>4</p>
-        <p use:arrowSrc={5}>5</p>
-        <p use:arrowSrc={6}>6</p>
+        {#each ids as id}
+          <p use:arrowSrc={id}>{id}</p>
+        {/each}
       </div>
       <div class="flex flex-col">
-        <p use:arrowDest={4}>1</p>
-        <p use:arrowDest={5}>2</p>
-        <p use:arrowDest={6}>3</p>
-        <p use:arrowDest={1}>4</p>
-        <p use:arrowDest={2}>5</p>
-        <p use:arrowDest={3}>6</p>
+        <div class="relative flex flex-row">
+          <button on:click={iterate} class="left-[-80px] bottom-4 absolute">
+            Iterate
+          </button>
+          <button class="left-10 bottom-4 absolute" on:click={reduce}>
+            reduce
+          </button>
+        </div>
+        {#each targetIds as id}
+          <p use:arrowDest={id}>{id}</p>
+        {/each}
       </div>
     </div>
   </div>
