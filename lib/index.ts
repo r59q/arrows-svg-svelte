@@ -3,7 +3,9 @@ import arrowCreate from "arrows-svg";
 const fromTargets: Map<string, HTMLElement> = new Map();
 const toTargets: Map<string, HTMLElement[]> = new Map();
 
-const arrowSrc = (element: HTMLElement, id: string) => {
+const arrowSrc = (element: HTMLElement, id: string | number) => {
+    id = id.toString();
+
     fromTargets.set(id, element);
     let x = id
     return {
@@ -17,7 +19,9 @@ const arrowSrc = (element: HTMLElement, id: string) => {
     }
 }
 
-const arrowDest = (element: HTMLElement, id: string) => {
+const arrowDest = (element: HTMLElement, id: string | number) => {
+    id = id.toString();
+
     if (toTargets.has(id)) {
         toTargets.set(id, [...toTargets.get(id)!, element])
     } else {

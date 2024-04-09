@@ -604,6 +604,11 @@ video {
   -moz-osx-font-smoothing: grayscale;
 }
 
+p {
+  margin: 8px;
+  padding: 8px;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
