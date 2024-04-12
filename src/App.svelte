@@ -19,7 +19,10 @@
     targetIds = iterated([...targetIds]);
   };
 
-  const reduce = () => {};
+  const reduce = () => {
+    const [some, ...rest] = targetIds;
+    targetIds = rest;
+  };
 </script>
 
 <main class="w-screen h-screen">
