@@ -11,7 +11,7 @@ const id = 'someId';
 
 The assign source and destinations elements. 
 
-```
+```svelte
 <p use:arrowSrc={id}>Arrow from</p>
 <p use:arrowDest={id}>Arrow to</p>
 ```
