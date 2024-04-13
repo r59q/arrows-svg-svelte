@@ -19,6 +19,7 @@
     targetIds = iterated([...targetIds]);
   };
 
+  // Remove an element from destinations
   const reduce = () => {
     const [some, ...rest] = [...targetIds].reverse();
     targetIds = rest;
