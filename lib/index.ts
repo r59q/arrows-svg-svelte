@@ -1,72 +1,111 @@
 import arrowCreate, { type IArrow } from "arrows-svg";
+import { get, writable, type Readable, type Writable, derived } from "svelte/store";
 
-const fromTargets: Map<string, HTMLElement> = new Map();
-const toTargets: Map<string, HTMLElement[]> = new Map();
-const arrowsDrawn: Map<string, IArrow[]> = new Map();
-const arrowSrc = (element: HTMLElement, id: string | number) => {
-    id = id.toString();
-    if (fromTargets.has(id)) {
-        throw new Error(`Arrow ${id} already has a source! (this behaviour should change in the future)`)
-    }
-    fromTargets.set(id, element)
-    return {
-        update: (newId: string) => {
-            console.log("Source was changed")
-        },
-        destroy: () => {
-            console.log("Source was destroyed")
-        }
-    }
+type ArrowID = string | number;
+
+type ArrowAction = (element: HTMLElement, id: ArrowID) => {
+    update: (newId: ArrowID) => void,
+    destroy: () => void
 }
 
-const arrowDest = (element: HTMLElement, id: string | number) => {
-    id = id.toString();
+type ArrowSourceAction = ArrowAction;
 
-    if (toTargets.has(id)) {
-        if (toTargets.get(id)!.includes(element)) {
-            toTargets.set(id, [...toTargets.get(id)!, element])
-        }
-    } else {
-        toTargets.set(id, [element])
-    }
+type ArrowDestinationAction = ArrowAction;
 
-
-    return {
-        update: (newId: string) => {
-            console.log("Destination was changed")
-        },
-        destroy: () => {
-            console.log("Destination was destroyed")
-        }
-    }
+type SourceDestinationElementPair = {
+    from: HTMLElement,
+    to: HTMLElement
 }
-const drawArrow = (from: HTMLElement, to: HTMLElement): IArrow => {
-    try {
-        console.log("Attempting to draw")
-        const arrow = arrowCreate({
-            from,
-            to
+
+type Arrow = {
+    elementPair: SourceDestinationElementPair,
+    arrow: IArrow,
+}
+
+type ArrowElement = {
+    id: ArrowID,
+    element: HTMLElement
+}
+
+const sources: Writable<ArrowElement[]> = writable([])
+const destinations: Writable<ArrowElement[]> = writable([])
+
+const sourceDestinationPairs: Readable<SourceDestinationElementPair[]> = derived([sources, destinations], stores => {
+    const srcs = stores[0]
+    const dests = stores[1]
+    return srcs.flatMap(src => {
+        const dest = dests.filter(el => el.id === src.id);
+        return dest.map(el => {
+            return { from: src.element, to: el.element } as SourceDestinationElementPair
         })
-        console.log("Arrow created")
-        console.log({
-            from: from.innerHTML, to: to.innerHTML
-        })
-        document.body.append(arrow.node)
-        return arrow
-    } catch (error) {
-        throw error;
-    }
-}
-
-const drawArrows = () => {
-    fromTargets.forEach((src, srcId) => {
-        const target = toTargets.get(srcId);
-        if (target) {
-            target.forEach(dest => {
-                const arrow = drawArrow(src, dest)
-            })
-        }
     })
+})
+
+const arrows: Writable<Arrow[]> = writable([])
+
+sourceDestinationPairs.subscribe(pairs => {
+    arrows.update(update => {
+        update.forEach(arr => arr.arrow.clear())
+        update = []
+        pairs.forEach(pair => {
+            const arrow = arrowCreate({ ...pair })
+            document.body.append(arrow.node)
+            update.push({
+                elementPair: pair,
+                arrow
+            })
+        })
+        return update;
+    })
+})
+
+const arrowSrc: ArrowSourceAction = (element, id) => {
+    let arrowId = id;
+    sources.update((update) => {
+        update.push({ element, id: arrowId })
+        return update;
+    })
+    return {
+        update(newId) {
+            sources.update(update => {
+                update = [...update].filter(el => el.element != element)
+                update.push({ element, id: newId })
+                return update;
+            })
+            arrowId = newId;
+        },
+        destroy() {
+            sources.update(update => {
+                update = [...update].filter(el => el.element != element)
+                return update;
+            })
+        },
+    }
 }
 
-export { arrowSrc, arrowDest, drawArrows }
+const arrowDest: ArrowDestinationAction = (element, id) => {
+    let arrowId = id;
+    destinations.update((update) => {
+        update.push({ element, id: arrowId })
+        return update;
+    })
+    return {
+        update(newId) {
+            destinations.update(update => {
+                update = [...update].filter(el => el.element != element)
+                update.push({ element, id: newId })
+                return update;
+            })
+            arrowId = newId;
+        },
+        destroy() {
+            destinations.update(update => {
+                update = [...update].filter(el => el.element != element)
+                return update;
+            })
+        },
+    }
+}
+
+export { arrowSrc, arrowDest };
+export type { ArrowID };

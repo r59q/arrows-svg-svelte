@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { arrowSrc, arrowDest, drawArrows } from "../lib";
+  import { arrowSrc, arrowDest } from "../lib";
   import { onMount } from "svelte";
 
   onMount(() => {
     setTimeout(() => {
-      drawArrows();
+      // drawArrows();
     }, 200);
   });
 
@@ -12,7 +12,7 @@
     return arr.map((val) => val + 1).map((val) => val % ids.length);
   };
 
-  const ids = [0, 1, 2, 3, 4, 5];
+  let ids = [0, 1, 2, 3, 4, 5];
   let targetIds = iterated(ids);
 
   const iterate = () => {
@@ -20,8 +20,13 @@
   };
 
   const reduce = () => {
-    const [some, ...rest] = targetIds;
+    const [some, ...rest] = [...targetIds].reverse();
     targetIds = rest;
+  };
+
+  const srcReduce = () => {
+    const [some, ...rest] = [...ids].reverse();
+    ids = rest;
   };
 </script>
 
@@ -29,6 +34,7 @@
   <div class="flex flex-col justify-center h-full">
     <div class="flex flex-row justify-evenly">
       <div class="flex flex-col">
+        <button on:click={srcReduce}>reduce</button>
         {#each ids as id}
           <p use:arrowSrc={id}>{id}</p>
         {/each}
