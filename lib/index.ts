@@ -1,5 +1,5 @@
 import arrowCreate, { type IArrow } from "arrows-svg";
-import { get, writable, type Readable, type Writable, derived } from "svelte/store";
+import { writable, type Readable, type Writable, derived } from "svelte/store";
 
 type ArrowID = string | number;
 

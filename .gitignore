@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 src/app.css
+
+yalc.lock
+
+.yalc

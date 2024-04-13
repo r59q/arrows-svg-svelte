@@ -35,6 +35,9 @@
     "vite": "^5.2.0",
     "vite-plugin-dts": "^3.8.1"
   },
+  "dependencies": {
+    "arrows-svg": "^1.8.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/r59q/arrows-svg-svelte.git"
@@ -53,7 +56,4 @@
     "url": "https://github.com/r59q/arrows-svg-svelte/issues"
   },
   "homepage": "https://github.com/r59q/arrows-svg-svelte#readme",
-  "dependencies": {
-    "arrows-svg": "^1.8.0"
-  }
 }
