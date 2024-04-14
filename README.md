@@ -18,6 +18,27 @@ The assign source and destinations elements.
 
 Each arrow ID can only have 1 source, but multiple destinations
 
+## Styling
+
+To style the arrows, css classes are needed (currently globally)
+
+```css
+.arrow {
+  pointer-events: none;
+}
+
+.arrow__path {
+  stroke: #000;
+  fill: transparent;
+  stroke-dasharray: 4 2;
+}
+
+.arrow__head line {
+  stroke: #000;
+  stroke-width: 1px;
+}
+```
+
 ## Dev
 to start development run the following commands (in 3 different terminals)
 ```

@@ -35,7 +35,9 @@
   <div class="flex flex-col justify-center h-full">
     <div class="flex flex-row justify-evenly">
       <div class="flex flex-col">
-        <button on:click={srcReduce}>reduce</button>
+        <div class="relative">
+          <button class="absolute bottom-4" on:click={srcReduce}>reduce</button>
+        </div>
         {#each ids as id}
           <p use:arrowSrc={id}>{id}</p>
         {/each}
