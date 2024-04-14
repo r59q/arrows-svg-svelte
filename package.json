@@ -36,7 +36,7 @@
     "vite-plugin-dts": "^3.8.1"
   },
   "dependencies": {
-    "arrows-svg": "^1.8.0"
+    "arrows-svg": "^1.8.1"
   },
   "repository": {
     "type": "git",
