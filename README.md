@@ -18,7 +18,9 @@ The assign source and destinations elements.
 
 Each arrow ID can only have 1 source, but multiple destinations
 
-![Example](https://github.com/r59q/arrows-svg-svelte/blob/master/public/example.png?raw=true)
+<div style="display:flex; justify-content:center">
+<img src="https://github.com/r59q/arrows-svg-svelte/blob/master/public/example.png?raw=true"/>
+</div>
 
 ## Styling
 
